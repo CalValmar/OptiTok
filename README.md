@@ -13,7 +13,7 @@ OptiTok is a Python script that scrapes and downloads videos from a specified Ti
 - Handle errors and exceptions during the download process
 
 ## Demonstration
-![demo](/src/demo.webm)
+![demo](/src/demo.mp4)
 
 ## Installation
 
@@ -45,7 +45,7 @@ This step is mandatory to run the script. The file `config.json` is created when
 ```
 
 Follow this guide to get the cookies, headers, params, and data:
-![Guide](/src/guide.webm)
+![Guide](/src/guide.mp4)
 
 Exemple of a filled configuration file: (Don't copy this, it's an example)
 
