@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+dist/
+build/
+
+# Environments
+.env
+.venv/
+venv/
+ENV/
+
+# IDEs
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Project specific
+videos/
+config.json
