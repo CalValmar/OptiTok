@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 
 from urllib.request import urlopen
+import socket
 from colorama import Fore, Style
 from bs4 import BeautifulSoup
 import argparse
@@ -83,7 +84,7 @@ def extract_video_urls(driver, className):
     urlsToDownload = driver.execute_script(script)
     return urlsToDownload
 
-def download_video(link, id, user):
+def download_video(link, id, user, config):
     data = {
         'id': link,
         'locale': config['data']['locale'],
@@ -101,12 +102,13 @@ def download_video(link, id, user):
             'tt': config['data']['tt'],
         }
         
-        response = requests.post('https://ssstik.io/abc', params=params, cookies=cookies, headers=headers, data=data)
+        response = requests.post('https://ssstik.io/abc', params=params, cookies=cookies, headers=headers, data=data, timeout=15)
         downloadSoup = BeautifulSoup(response.text, "html.parser")
 
         downloadLink = downloadSoup.a["href"]
         videoTitle = downloadSoup.p.getText().strip()
         
+        socket.setdefaulttimeout(30)
         mp4File = urlopen(downloadLink)
         with open(f"videos/{user}/{id}-{videoTitle}.mp4", "wb") as output:
             while True:
@@ -148,7 +150,7 @@ def main(user):
                 print(Fore.LIGHTYELLOW_EX + Style.BRIGHT + time.strftime("%H:%M:%S", time.localtime()) + Fore.LIGHTCYAN_EX + f" [{index+1}] Video already downloaded" + Fore.LIGHTYELLOW_EX + Style.BRIGHT + " : " + Style.RESET_ALL + url)
                 continue
             time.sleep(10) # 10 seconds sleep to avoid getting blocked by TikTok
-            download_video(url, index+1, user)
+            download_video(url, index+1, user, config)
             
         print(Fore.LIGHTBLUE_EX + Style.BRIGHT + "     +" + Fore.LIGHTYELLOW_EX + Style.BRIGHT + "=================================" + Fore.LIGHTBLUE_EX + Style.BRIGHT + "+")
         print(Fore.LIGHTBLUE_EX + Style.BRIGHT + "       " + Fore.LIGHTBLUE_EX + Style.BRIGHT + "All videos have been downloaded" + Fore.LIGHTBLUE_EX + Style.BRIGHT)
